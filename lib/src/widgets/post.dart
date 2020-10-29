@@ -110,9 +110,15 @@ class _Actions extends StatelessWidget {
             margin: EdgeInsets.only(left: 15.0, top: 5.0),
             child: Row(
               children: [
-                Text('0 me gusta'),
+                GestureDetector(
+                  onTap:() => _createDialog(context, LikesDialog()),
+                  child: Text('0 me gusta')
+                ),
                 SizedBox(width: 15.0),
-                Text('0 Comentarios')
+                GestureDetector(
+                  onTap: () => _createDialog(context, CommentsDialog()),
+                  child: Text('0 Comentarios')
+                )
               ],
             ),
           ),
@@ -124,25 +130,7 @@ class _Actions extends StatelessWidget {
                 SizedBox(width: 5.0,),
                 IconButton(
                   icon: Icon(Icons.comment),
-                  onPressed: () async{
-                    await showGeneralDialog(
-
-                      context: context, 
-                      transitionBuilder: (context, a1, a2, widget) {
-                        final curvedValue = Curves.fastLinearToSlowEaseIn.transform(a1.value) - 1.0;
-
-                        return Transform(
-                          transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-                          child: Opacity(
-                            opacity: a1.value,
-                            child: CommentsDialog()
-                          ),
-                        );
-                      },
-                      transitionDuration: Duration(milliseconds: 300),
-                      pageBuilder: (context, a1, a2) => CommentsDialog()
-                    );
-                  },
+                  onPressed: () => _createDialog(context, CommentsDialog())
                 )
               ],
             ),
@@ -154,11 +142,30 @@ class _Actions extends StatelessWidget {
   }
 }
 
+_createDialog(BuildContext context, widget) async {
+  await showGeneralDialog(
+    context: context, 
+    transitionBuilder: (context, a1, a2, widget) {
+      final curvedValue = Curves.fastLinearToSlowEaseIn.transform(a1.value) - 1.0;
+
+      return Transform(
+        transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+        child: Opacity(
+          opacity: a1.value,
+          child: widget
+        ),
+      );
+    },
+    transitionDuration: Duration(milliseconds: 300),
+    pageBuilder: (context, a1, a2) => widget
+  );
+}
+
 class CommentsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _size = MediaQuery.of(context).size;
+    // final _size = MediaQuery.of(context).size;
     TextEditingController _commentTextFieldController = new TextEditingController();
 
     return Center(
@@ -216,6 +223,44 @@ class CommentsDialog extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class LikesDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // final _size = MediaQuery.of(context).size;
+    return Center(
+      child: Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(50), topLeft: Radius.circular(50))
+          ),
+          height: 480.0,
+          child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/img/volkstoysfb.png'),
+                ),
+                title: Text('Username'),
+                trailing: IconButton(
+                  icon: Icon(Icons.add), 
+                  tooltip: 'Follow',
+                  onPressed: (){}
+                ),
+                onTap: (){},
+              );
+            },
+            itemCount: 10,
+          )
         ),
       ),
     );
