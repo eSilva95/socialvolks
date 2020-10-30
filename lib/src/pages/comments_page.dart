@@ -61,7 +61,8 @@ class CommentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    final _size = MediaQuery.of(context).size;
+    var listview = ListView.builder(
       itemCount: 5,
       itemBuilder: (BuildContext context, int index) {
         return Column(
@@ -78,6 +79,11 @@ class CommentsList extends StatelessWidget {
           ],
         );
       },
+    );
+
+    return Container(
+      height: _size.height * 0.8,
+      child: listview,
     );
   }
 }
