@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:socialvolks/src/pages/comments_page.dart';
 import 'package:socialvolks/src/pages/home_page.dart';
 import 'package:socialvolks/src/pages/imageview_page.dart';
+import 'package:socialvolks/src/pages/likes_page.dart';
 import 'package:socialvolks/src/pages/login_page.dart';
 // import 'package:socialvolks/src/pages/profile_page.dart';
  
@@ -15,9 +17,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       initialRoute: 'login',
       routes: {
-        'home' : (BuildContext context) => HomePage(),
-        'login' : (BuildContext context) => LoginPage(),
-        'image' : (BuildContext context) => ImageViewPage(),
+        'home'     : (BuildContext context) => HomePage(),
+        'login'    : (BuildContext context) => LoginPage(),
+        'image'    : (BuildContext context) => ImageViewPage(),
+        'likes'    : (BuildContext context) => LikesPage(),
+        'comments' : (BuildContext context) => CommentsPage(),
         // 'profile' : (BuildContext context) => ProfilePage(),
       },
     );

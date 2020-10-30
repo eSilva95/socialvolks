@@ -111,12 +111,12 @@ class _Actions extends StatelessWidget {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap:() => _createDialog(context, LikesDialog()),
+                  onTap:() => Navigator.pushNamed(context, 'likes'),
                   child: Text('0 me gusta')
                 ),
                 SizedBox(width: 15.0),
                 GestureDetector(
-                  onTap: () => _createDialog(context, CommentsDialog()),
+                  onTap: () => Navigator.pushNamed(context, 'comments'),
                   child: Text('0 Comentarios')
                 )
               ],
@@ -130,138 +130,13 @@ class _Actions extends StatelessWidget {
                 SizedBox(width: 5.0,),
                 IconButton(
                   icon: Icon(Icons.comment),
-                  onPressed: () => _createDialog(context, CommentsDialog())
+                  onPressed: () => Navigator.pushNamed(context, 'comments')
                 )
               ],
             ),
           ),
           Divider(),
         ],
-      ),
-    );
-  }
-}
-
-_createDialog(BuildContext context, widget) async {
-  await showGeneralDialog(
-    context: context, 
-    transitionBuilder: (context, a1, a2, widget) {
-      final curvedValue = Curves.fastLinearToSlowEaseIn.transform(a1.value) - 1.0;
-
-      return Transform(
-        transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-        child: Opacity(
-          opacity: a1.value,
-          child: widget
-        ),
-      );
-    },
-    transitionDuration: Duration(milliseconds: 300),
-    pageBuilder: (context, a1, a2) => widget
-  );
-}
-
-class CommentsDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    // final _size = MediaQuery.of(context).size;
-    TextEditingController _commentTextFieldController = new TextEditingController();
-
-    return Center(
-      child: SingleChildScrollView(
-        reverse: true,
-        physics: NeverScrollableScrollPhysics(),
-        child: Container(
-          child: Center(
-            child: Dialog(
-              backgroundColor: Colors.transparent,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(50), topLeft: Radius.circular(50))
-                    ),
-                    height: 480.0,
-                      child: Center(
-                        child: ListView.builder(itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: EdgeInsets.all(10.0),
-                              child: Center(
-                                child: Text('Comments'),
-                              )
-                            );
-                          },
-                          itemCount: 1,
-                        ),
-                      )
-                    ),
-                    SizedBox(height: 20.0,),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(50.0)
-                      ),
-                      child: TextField(
-                        controller: _commentTextFieldController,
-                        decoration: InputDecoration(
-                          hintText: 'Comment',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            borderSide: BorderSide.none
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.send), 
-                            onPressed: (_commentTextFieldController.text.isNotEmpty) ? null : (){},
-                            splashRadius: 5.0,
-                          ),
-                        ),
-                      ),
-                    )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LikesDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // final _size = MediaQuery.of(context).size;
-    return Center(
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(50), topLeft: Radius.circular(50))
-          ),
-          height: 480.0,
-          child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/img/volkstoysfb.png'),
-                ),
-                title: Text('Username'),
-                trailing: IconButton(
-                  icon: Icon(Icons.add), 
-                  tooltip: 'Follow',
-                  onPressed: (){}
-                ),
-                onTap: (){},
-              );
-            },
-            itemCount: 10,
-          )
-        ),
       ),
     );
   }
