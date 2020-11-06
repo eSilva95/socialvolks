@@ -71,14 +71,21 @@ class _Description extends StatelessWidget {
   }
 }
 
-class _ImagePost extends StatelessWidget {
+class _ImagePost extends StatefulWidget {
   final List images;
   final int index;
   _ImagePost(this.images, this.index);
 
   @override
+  __ImagePostState createState() => __ImagePostState();
+}
+
+class __ImagePostState extends State<_ImagePost> {
+  @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
+    final transformationController = TransformationController();
+
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       child: ClipRRect(
@@ -89,10 +96,18 @@ class _ImagePost extends StatelessWidget {
           constraints: BoxConstraints(
             maxHeight: 480.0
           ),
-          child: FadeInImage(
-            fit: BoxFit.contain,
-            placeholder: AssetImage('assets/img/loading.gif'), 
-            image: AssetImage('assets/img/${images[index]}')
+          child: InteractiveViewer(
+            transformationController: transformationController,
+            onInteractionEnd: (details) {
+              setState(() {
+                transformationController.toScene(Offset.zero);
+              });
+            },
+            child: FadeInImage(
+              fit: BoxFit.contain,
+              placeholder: AssetImage('assets/img/loading.gif'), 
+              image: AssetImage('assets/img/${widget.images[widget.index]}')
+            ),
           ),
         ),
       ),
